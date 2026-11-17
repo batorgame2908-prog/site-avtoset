@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное — АвтоСеть</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        /* ===== ШАПКА ===== */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1e3d59;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #ff6e40;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #555;
+            margin-right: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: #ff6e40;
+        }
+
+        .header-btn {
+            background-color: #ff6e40;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .header-btn:hover {
+            background-color: #e65c30;
+        }
+
+        /* ===== ЗАГОЛОВОК СТРАНИЦЫ ===== */
+        .page-hero {
+            padding-top: 100px;
+            padding-bottom: 40px;
+            background: linear-gradient(135deg, #1e3d59 0%, #2a4d6e 100%);
+            color: white;
+        }
+
+        .page-hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .page-hero p {
+            font-size: 18px;
+            color: #e0e6ed;
+            line-height: 1.6;
+        }
+
+        /* ===== СЕТКА КАРТОЧЕК ===== */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .car-card {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .car-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: #e0e6ed;
+        }
+
+        .car-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .car-card:hover .car-image-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .car-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff6e40;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .car-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .car-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e3d59;
+            margin-bottom: 8px;
+        }
+
+        .car-meta {
+            display: flex;
+            gap: 10px;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .car-meta span {
+            background: #f4f6f9;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .car-price {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ff6e40;
+            margin-bottom: 18px;
+            margin-top: auto;
+        }
+
+        .remove-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ffffff;
+            border: 2px solid #ff6e40;
+            color: #ff6e40;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .remove-btn:hover {
+            background: #ff6e40;
+            color: white;
+        }
+
+        /* ===== ПУСТОЕ СОСТОЯНИЕ ===== */
+        .empty-state {
+            text-align: center;
+            padding: 80px 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-state .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h2 {
+            font-size: 28px;
+            color: #1e3d59;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            color: #888;
+            font-size: 16px;
+            margin-bottom: 30px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #ff6e40;
+            color: white;
+            padding: 14px 35px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #e65c30;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            font-size: 14px;
+            background: #ffffff;
+            margin-top: 60px;
+            border-top: 1px solid #e0e6ed;
+        }
+
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .page-hero h1 { font-size: 28px; }
+            .page-hero p { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ШАПКА -->
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">Авто<span>Сеть</span></a>
+            <nav>
+                <a href="/catalog">Купить авто</a>
+                <a href="#">Продать авто</a>
+                <a href="#">Автокредит</a>
+                <a href="#">Контакты</a>
+                <a href="/favorites" class="active">❤️ Избранное</a>
+            </nav>
+            <a href="#" class="header-btn">Продать авто</a>
+        </div>
+    </header>
+
+    <!-- ЗАГОЛОВОК -->
+    <section class="page-hero">
+        <div class="page-hero-container">
+            <h1>Мои избранные автомобили</h1>
+            <p>Здесь хранятся машины, которые вам понравились. Вы можете вернуться к ним в любой момент.</p>
+        </div>
+    </section>
+
+    <!-- КОНТЕНТ -->
+    <div class="container">
+        {% if cars %}
+            <div id="favorites-list" class="cars-grid">
+                {% for car in cars %}
+                <div class="car-card" id="car-card-{{ car.id }}">
+                    <div class="car-image-wrapper">
+                        <span class="car-badge">В избранном</span>
+                        <img src="{{ car.image }}" alt="{{ car.brand_name }} {{ car.model }}" onerror="this.src='https://via.placeholder.com/800x500?text=Auto'">
+                    </div>
+                    <div class="car-info">
+                        <h3>{{ car.brand_name }} {{ car.model }}, {{ car.year }}</h3>
+                        <div class="car-meta">
+                            <span>{{ car.year }} год</span>
+                            <span>{{ car.body_name }}</span>
+                            <span>{{ car.mileage }}</span>
+                        </div>
+                        <div class="car-price">{{ car.formatted_price }} ₽</div>
+                        <button class="remove-btn" onclick="removeFromFavorites('{{ car.id }}')">
+                            🗑 Удалить из избранного
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div id="empty-state" class="empty-state">
+                <div class="icon">💔</div>
+                <h2>В избранном пока пусто</h2>
+                <p>Добавляйте понравившиеся автомобили, чтобы вернуться к ним позже и не потерять.</p>
+                <a href="/catalog" class="btn-primary">Перейти в каталог</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        © 2026 АвтоСеть. Все права защищены.
+    </footer>
+
+    <script>
+        async function removeFromFavorites(carId) {
+            const card = document.getElementById(`car-card-${carId}`);
+            
+            try {
+                // Отправляем запрос на сервер, чтобы удалить авто из session
+                const response = await fetch(`/toggle-favorite/${carId}`, { method: 'POST' });
+                
+                if (response.ok) {
+                    // Удаляем карточку с экрана
+                    if (card) {
+                        card.remove();
+                    }
+                    
+                    // Если удалили последнюю карточку — перезагружаем страницу, чтобы показался блок "Пусто"
+                    const remainingCards = document.querySelectorAll('.car-card');
+                    if (remainingCards.length === 0) {
+                        location.reload();
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка при удалении из избранного:', error);
+            }
+        }
+    </script>
+
+</body>
+</html>
